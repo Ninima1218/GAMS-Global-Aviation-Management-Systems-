@@ -1,0 +1,203 @@
+.home-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.home-content {
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.platform-info {
+  flex: 1;
+  padding: 40px;
+  background: #f8fafb;
+  color: #2c3e50;
+}
+
+.platform-info h1 {
+  font-size: 42px;
+  color: #2c3e50;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.platform-info h2 {
+  font-size: 20px;
+  color: #475569;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.platform-description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #64748b;
+}
+
+.platform-description p {
+  margin-bottom: 16px;
+}
+
+.platform-description ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.platform-description li {
+  margin-bottom: 12px;
+  padding-left: 24px;
+  position: relative;
+}
+
+.platform-description li:before {
+  content: "•";
+  color: #475569;
+  position: absolute;
+  left: 0;
+}
+
+.login-section {
+  flex: 1;
+  padding: 40px;
+  background: white;
+}
+
+.login-box {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.login-box h2 {
+  color: #2c3e50;
+  margin-bottom: 24px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  color: #475569;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.form-group input {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  background: #f8fafb;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #64748b;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.1);
+}
+
+.form-group input.error {
+  border-color: #94a3b8;
+  background: #fff5f5;
+}
+
+.form-group input.error:focus {
+  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.1);
+}
+
+.error-message {
+  color: #64748b;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.remember-me input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.forgot-password {
+  color: #475569;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.forgot-password:hover {
+  color: #2c3e50;
+}
+
+.login-btn {
+  background: #475569;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.login-btn:hover {
+  background: #334155;
+  transform: translateY(-1px);
+}
+
+.login-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .home-content {
+    flex-direction: column;
+  }
+
+  .platform-info {
+    padding: 30px;
+  }
+
+  .login-section {
+    padding: 30px;
+  }
+} 

@@ -67,38 +67,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
     try {
-      // TODO: Implement actual login API call
-      // For now, we'll just simulate a successful login
-      const mockUser: User = {
-        id: '1',
-        email,
-        firstName: 'Test',
-        lastName: 'User',
-        role: UserRole.GENERAL_DIRECTOR,
-        permissions: [
-          Permission.VIEW_ALL_MODULES,
-          Permission.VIEW_EXECUTIVE_DASHBOARD,
-          Permission.VIEW_KPI_DASHBOARD,
-          Permission.VIEW_MONTHLY_REPORTS,
-          Permission.APPROVE_OBJECTIVES,
-          Permission.MANAGE_TOP_LEVEL_USERS,
-          Permission.VIEW_DOCUMENTS
-        ]
-      };
-      
-      localStorage.setItem('auth_token', 'mock_token');
-      setState({
-        user: mockUser,
-        isAuthenticated: true,
-        isLoading: false,
-        error: null
-      });
+      // Check for test credentials
+      if (email === 'test@example.com' && password === 'test123') {
+        const mockUser: User = {
+          id: '1',
+          email,
+          firstName: 'Test',
+          lastName: 'User',
+          role: UserRole.GENERAL_DIRECTOR,
+          permissions: [
+            Permission.VIEW_ALL_MODULES,
+            Permission.VIEW_EXECUTIVE_DASHBOARD,
+            Permission.VIEW_KPI_DASHBOARD,
+            Permission.VIEW_MONTHLY_REPORTS,
+            Permission.APPROVE_OBJECTIVES,
+            Permission.MANAGE_TOP_LEVEL_USERS,
+            Permission.VIEW_DOCUMENTS
+          ]
+        };
+        
+        localStorage.setItem('auth_token', 'mock_token');
+        setState({
+          user: mockUser,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null
+        });
+      } else {
+        throw new Error('Invalid credentials');
+      }
     } catch (error) {
       setState({
         user: null,
         isAuthenticated: false,
         isLoading: false,
-        error: 'Login failed'
+        error: 'Invalid email or password'
       });
       throw error;
     }

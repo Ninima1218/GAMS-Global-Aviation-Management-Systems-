@@ -24,6 +24,11 @@ export const Login: React.FC = () => {
     <div className="login-container">
       <div className="login-box">
         <h2>Airline Management System</h2>
+        <div className="test-credentials">
+          <p>Test credentials:</p>
+          <p>Email: test@example.com</p>
+          <p>Password: test123</p>
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="email">Email</label>

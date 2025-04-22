@@ -116,7 +116,20 @@ export enum Permission {
   APPROVE_DOCUMENTS = 'approve_documents',
   APPROVE_CHANGES = 'approve_changes',
   VIEW_DEPARTMENT_DATA = 'view_department_data',
-  EDIT_DEPARTMENT_DATA = 'edit_department_data'
+  EDIT_DEPARTMENT_DATA = 'edit_department_data',
+
+  // HR Management permissions
+  MANAGE_EMPLOYEES = 'MANAGE_EMPLOYEES',
+  VIEW_EMPLOYEE_DATA = 'VIEW_EMPLOYEE_DATA',
+  MANAGE_DEPARTMENTS = 'MANAGE_DEPARTMENTS',
+  MANAGE_POSITIONS = 'MANAGE_POSITIONS',
+  MANAGE_DOCUMENTS = 'MANAGE_DOCUMENTS',
+  MANAGE_SCHEDULES = 'MANAGE_SCHEDULES',
+  MANAGE_DISCIPLINARY = 'MANAGE_DISCIPLINARY',
+  VIEW_ACTIVITY_LOGS = 'VIEW_ACTIVITY_LOGS',
+  EXPORT_EMPLOYEE_DATA = 'EXPORT_EMPLOYEE_DATA',
+  MANAGE_ACCESS = 'MANAGE_ACCESS',
+  MANAGE_FUNCTIONS = 'MANAGE_FUNCTIONS',
 }
 
 export const RolePermissions: Record<UserRole, Permission[]> = {
@@ -340,8 +353,22 @@ export const RolePermissions: Record<UserRole, Permission[]> = {
   ],
 
   [UserRole.HR_MANAGER]: [
-    Permission.VIEW_DEPARTMENT_TRAINING,
-    Permission.MANAGE_TOP_LEVEL_USERS,
+    Permission.VIEW_ALL_MODULES,
+    Permission.MANAGE_EMPLOYEES,
+    Permission.VIEW_EMPLOYEE_DATA,
+    Permission.MANAGE_DEPARTMENTS,
+    Permission.MANAGE_POSITIONS,
+    Permission.MANAGE_DOCUMENTS,
+    Permission.MANAGE_TRAINING,
+    Permission.MANAGE_SCHEDULES,
+    Permission.MANAGE_DISCIPLINARY,
+    Permission.VIEW_ACTIVITY_LOGS,
+    Permission.EXPORT_EMPLOYEE_DATA,
+    Permission.MANAGE_ACCESS,
+    Permission.MANAGE_FUNCTIONS,
+    Permission.VIEW_HR_DASHBOARD,
+    Permission.MANAGE_HR_REPORTS,
+    Permission.VIEW_HR_METRICS,
     Permission.VIEW_DOCUMENTS,
     Permission.CREATE_SAFETY_REPORT
   ]

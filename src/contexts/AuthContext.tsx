@@ -10,85 +10,40 @@ interface AuthContextType extends AuthState {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const TEST_USER: User = {
+  id: '1',
+  email: 'test@example.com',
+  firstName: 'Test',
+  lastName: 'User',
+  role: UserRole.GENERAL_DIRECTOR,
+  permissions: [
+    Permission.VIEW_ALL_MODULES,
+    Permission.VIEW_EXECUTIVE_DASHBOARD,
+    Permission.VIEW_KPI_DASHBOARD,
+    Permission.VIEW_MONTHLY_REPORTS,
+    Permission.APPROVE_OBJECTIVES,
+    Permission.MANAGE_TOP_LEVEL_USERS,
+    Permission.VIEW_DOCUMENTS
+  ]
+};
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, setState] = useState<AuthState>({
-    user: null,
-    isAuthenticated: false,
-    isLoading: true,
-    error: null
+  const [state, setState] = useState<AuthState>(() => {
+    const storedUser = localStorage.getItem('user');
+    return {
+      user: storedUser ? JSON.parse(storedUser) : null,
+      isAuthenticated: !!storedUser,
+      isLoading: false,
+      error: null
+    };
   });
 
-  useEffect(() => {
-    // Check for stored auth token and validate it
-    const checkAuth = async () => {
-      try {
-        const token = localStorage.getItem('auth_token');
-        if (token) {
-          // TODO: Implement token validation with backend
-          // For now, we'll just set a mock user
-          const mockUser: User = {
-            id: '1',
-            email: 'test@example.com',
-            firstName: 'Test',
-            lastName: 'User',
-            role: UserRole.GENERAL_DIRECTOR,
-            permissions: [
-              Permission.VIEW_ALL_MODULES,
-              Permission.VIEW_EXECUTIVE_DASHBOARD,
-              Permission.VIEW_KPI_DASHBOARD,
-              Permission.VIEW_MONTHLY_REPORTS,
-              Permission.APPROVE_OBJECTIVES,
-              Permission.MANAGE_TOP_LEVEL_USERS,
-              Permission.VIEW_DOCUMENTS
-            ]
-          };
-          setState({
-            user: mockUser,
-            isAuthenticated: true,
-            isLoading: false,
-            error: null
-          });
-        } else {
-          setState(prev => ({ ...prev, isLoading: false }));
-        }
-      } catch (error) {
-        setState({
-          user: null,
-          isAuthenticated: false,
-          isLoading: false,
-          error: 'Authentication check failed'
-        });
-      }
-    };
-
-    checkAuth();
-  }, []);
-
   const login = async (email: string, password: string) => {
-    setState(prev => ({ ...prev, isLoading: true, error: null }));
     try {
-      // Check for test credentials
       if (email === 'test@example.com' && password === 'test123') {
-        const mockUser: User = {
-          id: '1',
-          email,
-          firstName: 'Test',
-          lastName: 'User',
-          role: UserRole.GENERAL_DIRECTOR,
-          permissions: [
-            Permission.VIEW_ALL_MODULES,
-            Permission.VIEW_EXECUTIVE_DASHBOARD,
-            Permission.VIEW_KPI_DASHBOARD,
-            Permission.VIEW_MONTHLY_REPORTS,
-            Permission.APPROVE_OBJECTIVES,
-            Permission.MANAGE_TOP_LEVEL_USERS,
-            Permission.VIEW_DOCUMENTS
-          ]
-        };
-        
-        localStorage.setItem('auth_token', 'mock_token');
+        localStorage.setItem('user', JSON.stringify(TEST_USER));
         setState({
-          user: mockUser,
+          user: TEST_USER,
           isAuthenticated: true,
           isLoading: false,
           error: null
@@ -108,7 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
-    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user');
     setState({
       user: null,
       isAuthenticated: false,
@@ -124,6 +79,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         role,
         permissions: getPermissionsForRole(role)
       };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
       setState(prev => ({
         ...prev,
         user: updatedUser

@@ -4,7 +4,7 @@ import { GeneralDirectorDashboard } from '../components/Dashboard/GeneralDirecto
 import { SafetyManagerDashboard } from '../components/Dashboard/SafetyManagerDashboard';
 import { QualityManagerDashboard } from '../components/Dashboard/QualityManagerDashboard';
 import { SecurityManagerDashboard } from '../components/Dashboard/SecurityManagerDashboard';
-import { HRManagerDashboard } from '../components/Dashboard/HRManagerDashboard';
+import HRDashboard from '../pages/HRDashboard';
 import { TrainingManagerDashboard } from '../components/Dashboard/TrainingManagerDashboard';
 
 export interface DashboardRoute {
@@ -36,7 +36,7 @@ export const dashboardRoutes: DashboardRoute[] = [
   },
   {
     path: '/hr-manager',
-    component: HRManagerDashboard,
+    component: HRDashboard,
     role: UserRole.HR_MANAGER,
   },
   {

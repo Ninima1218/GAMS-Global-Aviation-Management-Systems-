@@ -1,0 +1,66 @@
+{
+  "reports": [
+    {
+      "id": "1",
+      "type": "QUICK_SAFETY",
+      "title": "Bird Strike During Takeoff",
+      "description": "A bird strike occurred during takeoff at 1500 feet. No damage observed.",
+      "status": "PENDING_REVIEW",
+      "createdAt": "2024-02-20T10:00:00Z",
+      "updatedAt": "2024-02-20T10:00:00Z",
+      "createdBy": "1",
+      "isAnonymous": false,
+      "attachments": [],
+      "actions": [],
+      "comments": [],
+      "trackingNumber": "TR-ABC123",
+      "areaOfOccurrence": "Flight Operation",
+      "classification": "Incident",
+      "eventDateTime": "2024-02-20T09:45:00Z",
+      "location": "Airport XYZ",
+      "eventCategory": "BIRD_STRIKE",
+      "reporterRole": "PILOT",
+      "immediateAction": "Continued flight as normal, reported to ATC"
+    },
+    {
+      "id": "2",
+      "type": "FLIGHT",
+      "title": "Technical Issue During Flight",
+      "description": "Engine vibration detected during cruise phase. Parameters within limits.",
+      "status": "ACCEPTED",
+      "createdAt": "2024-02-19T15:30:00Z",
+      "updatedAt": "2024-02-19T16:00:00Z",
+      "createdBy": "2",
+      "isAnonymous": false,
+      "attachments": [],
+      "actions": [],
+      "comments": [],
+      "trackingNumber": "TR-DEF456",
+      "reportIdNumber": "RPT-789",
+      "areaOfOccurrence": "Technical / Maintenance",
+      "classification": "Incident",
+      "eventDateTime": "2024-02-19T14:00:00Z",
+      "location": "Flight ABC123",
+      "eventCategory": "TECHNICAL_ISSUE",
+      "reporterRole": "PILOT",
+      "immediateAction": "Monitored parameters, continued flight"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "email": "pilot@example.com",
+      "firstName": "John",
+      "lastName": "Doe",
+      "role": "PILOT"
+    },
+    {
+      "id": "2",
+      "email": "safety@example.com",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "role": "SAFETY_MANAGER"
+    }
+  ],
+  "sessions": []
+} 

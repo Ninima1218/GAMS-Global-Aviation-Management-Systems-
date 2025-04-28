@@ -1,0 +1,106 @@
+🛢️ Database Structure for HR Management System
+1. Departments Table
+
+Field	Type	Description
+id	UUID or INT (Primary Key)	Unique Department ID
+name	STRING	Department name
+description	TEXT (Optional)	Description of department
+created_at	TIMESTAMP	Creation date
+updated_at	TIMESTAMP	Last update date
+2. Positions Table
+
+Field	Type	Description
+id	UUID or INT (Primary Key)	Unique Position ID
+title	STRING	Position title (e.g., Flight Engineer, Pilot)
+description	TEXT	Description of position responsibilities
+department_id	UUID or INT (Foreign Key)	Linked department
+created_at	TIMESTAMP	Creation date
+updated_at	TIMESTAMP	Last update date
+3. Functions Table (Operational Responsibilities)
+
+Field	Type	Description
+id	UUID or INT (Primary Key)	Unique Function ID
+name	STRING	Function name (e.g., Aircraft Maintenance Check)
+description	TEXT	Function description
+created_at	TIMESTAMP	Creation date
+updated_at	TIMESTAMP	Last update date
+4. Employees Table
+
+Field	Type	Description
+id	UUID or INT (Primary Key)	Unique Employee ID
+full_name	STRING	Full name of employee
+photo_url	STRING	Link to employee's photo
+position_id	UUID or INT (Foreign Key)	Position assigned
+department_id	UUID or INT (Foreign Key)	Department assigned
+email	STRING	Email address
+phone	STRING	Phone number
+supervisor_id	UUID or INT (Foreign Key, nullable)	Supervisor (manager) Employee ID
+employment_date	DATE	Date of hire
+status	ENUM('Active', 'On Leave', 'Terminated')	Current status
+created_at	TIMESTAMP	Creation date
+updated_at	TIMESTAMP	Last update date
+5. Employee_Functions Table (Many-to-Many linking table)
+
+Field	Type	Description
+id	UUID or INT (Primary Key)	Unique ID
+employee_id	UUID or INT (Foreign Key)	Employee ID
+function_id	UUID or INT (Foreign Key)	Function ID
+assigned_at	TIMESTAMP	Assignment date
+6. Documents Table (General Documents)
+
+Field	Type	Description
+id	UUID or INT (Primary Key)	Unique Document ID
+employee_id	UUID or INT (Foreign Key)	Related Employee
+document_type	STRING	Type (passport, contract, NDA, etc.)
+document_url	STRING	Link to uploaded document
+signed	BOOLEAN	Signed (true/false)
+expiration_date	DATE (Optional)	Expiration date (if applicable)
+created_at	TIMESTAMP	Upload date
+7. Licenses Table (Specialized aviation certifications)
+
+Field	Type	Description
+id	UUID or INT (Primary Key)	Unique License ID
+employee_id	UUID or INT (Foreign Key)	Related Employee
+license_name	STRING	Name of license or clearance (e.g., EASA Part-66)
+issue_date	DATE	Date issued
+expiration_date	DATE	Expiry date
+status	ENUM('Valid', 'Expired', 'Pending Renewal')	License status
+document_url	STRING	Link to license document
+created_at	TIMESTAMP	Upload date
+8. Vacations and Business Trips Table
+
+Field	Type	Description
+id	UUID or INT (Primary Key)	Unique ID
+employee_id	UUID or INT (Foreign Key)	Related Employee
+type	ENUM('Vacation', 'Business Trip')	Type of leave
+start_date	DATE	Start date
+end_date	DATE	End date
+comment	TEXT	Optional comments
+created_at	TIMESTAMP	Record date
+9. Disciplinary Records Table
+
+Field	Type	Description
+id	UUID or INT (Primary Key)	Unique ID
+employee_id	UUID or INT (Foreign Key)	Related Employee
+record_date	DATE	Date of incident
+type	STRING	Type of record (Warning, Violation, etc.)
+description	TEXT	Details of incident
+created_at	TIMESTAMP	Record creation date
+10. Reminders Table (for deadlines, expirations, etc.)
+
+Field	Type	Description
+id	UUID or INT (Primary Key)	Unique Reminder ID
+employee_id	UUID or INT (Foreign Key, nullable)	Related Employee (optional)
+related_document_id	UUID or INT (Foreign Key, nullable)	Related Document/License
+reminder_type	STRING	Type (Contract Expiry, License Expiry, Training Deadline, etc.)
+reminder_date	DATE	When to notify
+status	ENUM('Pending', 'Completed')	Reminder status
+created_at	TIMESTAMP	Creation date
+📊 Notes for AI
+Use foreign keys to ensure relationships between employees, departments, and functions.
+
+Add indexes for fast search by employee name, status, license expiration dates.
+
+All dates should be stored in UTC format for consistency.
+
+The system must support soft delete (archive instead of hard delete) for employee records.

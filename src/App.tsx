@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Layout } from './components/Layout/Layout';
 import { useAuth } from './contexts/AuthContext';
 import { appRoutes } from './routes/dashboardRoutes';
-import Login from './pages/Login';
+import Login from './components/Auth/Login';
 import './App.css';
 
 const LoadingSpinner = () => (

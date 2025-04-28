@@ -1,57 +1,49 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { HRProvider } from './contexts/HRContext';
-import { Login } from './components/Auth/Login';
-import { Layout } from './components/Layout/Layout';
-import { ReportsPage } from './pages/ReportsPage';
-import { dashboardRoutes, getDashboardRoute } from './routes/dashboardRoutes';
 
-const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user } = useAuth();
-  return user ? <>{children}</> : <Navigate to="/login" />;
-};
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Layout } from './components/Layout/Layout';
+import { useAuth } from './contexts/AuthContext';
+import { appRoutes } from './routes/dashboardRoutes';
+import Login from './pages/Login';
+import './App.css';
+
+const LoadingSpinner = () => (
+  <div className="loading-spinner-container">
+    <div className="loading-spinner"></div>
+  </div>
+);
 
 const App: React.FC = () => {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
-    <AuthProvider>
-      <HRProvider>
-        <Router>
+    <Router>
+      <Suspense fallback={<LoadingSpinner />}>
+        {user ? (
+          <Layout>
+            <Routes>
+              {appRoutes.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={<route.component />}
+                />
+              ))}
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+          </Layout>
+        ) : (
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route
-              path="/*"
-              element={
-                <PrivateRoute>
-                  <Layout>
-                    <Routes>
-                      {dashboardRoutes.map(route => (
-                        <Route
-                          key={route.path}
-                          path={route.path}
-                          element={<route.component />}
-                        />
-                      ))}
-                      <Route path="/reports" element={<ReportsPage />} />
-                      <Route
-                        path="/"
-                        element={
-                          <Navigate
-                            to={user ? getDashboardRoute(user.role) : '/login'}
-                          />
-                        }
-                      />
-                    </Routes>
-                  </Layout>
-                </PrivateRoute>
-              }
-            />
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
-        </Router>
-      </HRProvider>
-    </AuthProvider>
+        )}
+      </Suspense>
+    </Router>
   );
 };
 

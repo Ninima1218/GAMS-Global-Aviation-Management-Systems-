@@ -49,4 +49,12 @@ export const dashboardRoutes: DashboardRoute[] = [
 export const getDashboardRoute = (role: UserRole): string => {
   const route = dashboardRoutes.find(r => r.role === role);
   return route ? route.path : '/general-director';
-}; 
+};
+
+export const appRoutes = [
+  ...dashboardRoutes,
+  {
+    path: '/employee/:employeeId',
+    component: React.lazy(() => import('../pages/EmployeeProfile')),
+  }
+]; 

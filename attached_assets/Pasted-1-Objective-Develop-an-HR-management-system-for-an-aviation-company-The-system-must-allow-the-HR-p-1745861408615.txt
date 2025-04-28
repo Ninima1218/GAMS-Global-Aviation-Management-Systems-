@@ -1,0 +1,172 @@
+1. Objective
+Develop an HR management system for an aviation company.
+The system must allow the HR profile to act as a super-administrator with full control over the company's organizational structure, employees, documents, and training compliance.
+
+2. Key Roles
+HR Super-Administrator: the main user of the system, responsible for all HR management functions.
+
+Employees: each employee has a personal editable profile card.
+
+3. Functional Requirements
+HR Super-Administrator Capabilities:
+🔹 Organization Management:
+
+Create, edit, and delete departments.
+
+Create, edit, and delete positions (job titles).
+
+Create roles and define associated functions (responsibilities).
+
+Assign functions to roles and directly to employees.
+
+🔹 Employee Management:
+
+Create and edit employee profiles.
+
+Assign employees to departments and positions.
+
+Manage employee statuses: Active / On Leave / Terminated.
+
+Attach specific functions to individual employees.
+
+🔹 Document and Certification Management:
+
+Upload and manage employee documents (e.g., passport, contracts, certifications).
+
+Upload, update, and track licenses and medical clearances.
+
+Track expiration dates of critical documents (certifications, licenses, contracts).
+
+🔹 Training and Qualifications:
+
+Assign mandatory and optional training programs to employees.
+
+Track course completion and certificate statuses.
+
+Maintain a history of internal and external training for each employee.
+
+🔹 Access Management:
+
+Grant or restrict employees' access to the system.
+
+🔹 Schedule and Activity Tracking:
+
+Manage and view employee vacations, business trips, and disciplinary records.
+
+Maintain a calendar view of upcoming events.
+
+🔹 Audit and History Logs:
+
+Record and display activity logs and change history for all employee data.
+
+🔹 Reminder System:
+
+Automatic reminders for:
+
+Document expiration (licenses, contracts, medical checks).
+
+Upcoming vacations or business trips.
+
+Deadlines for mandatory training.
+
+Approaching contract renewals or terminations.
+
+4. Sidebar Menu Structure
+Dashboard
+
+Departments
+
+Dropdown (submenu) listing all created departments dynamically.
+
+Each department links to its own page.
+
+Grant or Restrict System Access
+
+Documentation
+
+Schedule & Activity Tracking
+
+Note:
+When the "Departments" menu item is clicked, a dropdown submenu should display all available departments.
+When clicking on a specific department, it should open a department-specific page showing a table of all employees in that department.
+
+5. Department Page Structure
+When a department is selected:
+
+Show a table listing employees assigned to the department.
+
+Employee table columns:
+
+Employee ID
+
+Full Name
+
+Position
+
+Status (Active / On Leave / Terminated)
+
+Contact Information
+
+Certifications and License Status
+
+Expiration Dates
+
+Provide the ability to:
+
+View employee profile.
+
+Edit employee information.
+
+Create a new employee.
+
+Create a new department directly from the department section (optional button).
+
+6. Dashboard Contents (HR Dashboard)
+Number of employees (total, by department, by status).
+
+Absence Control (upcoming leaves and business trips).
+
+Reminders for:
+
+Expiring documents (passports, certifications, licenses).
+
+Contracts needing signing or approaching expiration.
+
+Vacancy Management (open job positions).
+
+Training and Education Statistics (courses completed, in progress, overdue).
+
+7. Employee Profile (Employee Card)
+Each employee must have a personal profile page that includes:
+
+General Information (Full Name, Photo, Position, Department, Contact Info, Status).
+
+Assigned Functions (list of operational responsibilities).
+
+Education and Certifications (degrees, professional certificates, training history).
+
+Licenses and Clearances (e.g., EASA Part-66, VLEK Medical Certification).
+
+Uploaded Documents (passport, employment contract, NDA, etc.).
+
+Schedule and Activity Log (vacations, trainings, business trips, disciplinary notes).
+
+Disciplinary Notes (violations, warnings, corrective actions).
+
+Actions Available:
+
+Edit Profile
+
+Export to PDF/Excel
+
+Block System Access
+
+Terminate/Archive Profile
+
+8. Technological Considerations
+Frontend must be fully responsive (desktop + mobile versions).
+
+Ability to integrate with future APIs (e.g., for real-time certificate validation, document signing systems).
+
+Modular structure for future scalability.
+

@@ -1,34 +1,44 @@
+
 export enum EmployeeStatus {
   ACTIVE = 'ACTIVE',
   ON_LEAVE = 'ON_LEAVE',
-  TERMINATED = 'TERMINATED',
-  SUSPENDED = 'SUSPENDED'
+  TERMINATED = 'TERMINATED'
 }
 
 export enum DocumentType {
   PASSPORT = 'PASSPORT',
   CONTRACT = 'CONTRACT',
-  CERTIFICATE = 'CERTIFICATE',
+  NDA = 'NDA',
+  CERTIFICATION = 'CERTIFICATION',
   LICENSE = 'LICENSE',
-  MEDICAL_CLEARANCE = 'MEDICAL_CLEARANCE',
-  TRAINING_CERTIFICATE = 'TRAINING_CERTIFICATE',
-  DIPLOMA = 'DIPLOMA',
   OTHER = 'OTHER'
 }
 
-export enum DocumentStatus {
+export enum LicenseStatus {
   VALID = 'VALID',
   EXPIRED = 'EXPIRED',
-  PENDING_RENEWAL = 'PENDING_RENEWAL',
-  REVOKED = 'REVOKED'
+  PENDING_RENEWAL = 'PENDING_RENEWAL'
+}
+
+export enum LeaveType {
+  VACATION = 'VACATION',
+  BUSINESS_TRIP = 'BUSINESS_TRIP'
+}
+
+export enum ReminderType {
+  CONTRACT_EXPIRY = 'CONTRACT_EXPIRY',
+  LICENSE_EXPIRY = 'LICENSE_EXPIRY',
+  TRAINING_DEADLINE = 'TRAINING_DEADLINE'
+}
+
+export enum ReminderStatus {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED'
 }
 
 export interface Department {
   id: string;
   name: string;
-  code: string;
-  headId?: string;
-  parentDepartmentId?: string;
   description?: string;
   createdAt: string;
   updatedAt: string;
@@ -37,39 +47,31 @@ export interface Department {
 export interface Position {
   id: string;
   title: string;
-  departmentId: string;
   description: string;
-  responsibilities: string[];
-  requirements: string[];
+  departmentId: string;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface EmployeeDocument {
+export interface Function {
   id: string;
-  employeeId: string;
-  type: DocumentType;
-  title: string;
-  fileUrl: string;
-  status: DocumentStatus;
-  issueDate: string;
-  expiryDate?: string;
-  issuedBy: string;
-  notes?: string;
+  name: string;
+  description: string;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface EmployeeTraining {
+export interface Employee {
   id: string;
-  employeeId: string;
-  title: string;
-  provider: string;
-  startDate: string;
-  endDate: string;
-  status: 'COMPLETED' | 'IN_PROGRESS' | 'PLANNED' | 'CANCELLED';
-  certificateUrl?: string;
-  notes?: string;
+  fullName: string;
+  photoUrl?: string;
+  positionId: string;
+  departmentId: string;
+  email: string;
+  phone: string;
+  supervisorId?: string;
+  employmentDate: string;
+  status: EmployeeStatus;
   createdAt: string;
   updatedAt: string;
 }
@@ -77,70 +79,56 @@ export interface EmployeeTraining {
 export interface EmployeeFunction {
   id: string;
   employeeId: string;
-  title: string;
-  description: string;
-  isOperational: boolean;
-  isRegulatory: boolean;
-  assignedDate: string;
-  assignedBy: string;
-  createdAt: string;
-  updatedAt: string;
+  functionId: string;
+  assignedAt: string;
 }
 
-export interface Employee {
+export interface Document {
   id: string;
   employeeId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  photoUrl?: string;
-  positionId: string;
-  departmentId: string;
-  supervisorId?: string;
-  status: EmployeeStatus;
-  startDate: string;
-  endDate?: string;
-  documents: EmployeeDocument[];
-  trainings: EmployeeTraining[];
-  functions: EmployeeFunction[];
-  notes?: string;
+  documentType: DocumentType;
+  documentUrl: string;
+  signed: boolean;
+  expirationDate?: string;
   createdAt: string;
-  updatedAt: string;
+}
+
+export interface License {
+  id: string;
+  employeeId: string;
+  licenseName: string;
+  issueDate: string;
+  expirationDate: string;
+  status: LicenseStatus;
+  documentUrl: string;
+  createdAt: string;
+}
+
+export interface Leave {
+  id: string;
+  employeeId: string;
+  type: LeaveType;
+  startDate: string;
+  endDate: string;
+  comment?: string;
+  createdAt: string;
 }
 
 export interface DisciplinaryRecord {
   id: string;
   employeeId: string;
-  type: 'WARNING' | 'VIOLATION' | 'CORRECTIVE_ACTION';
+  recordDate: string;
+  type: string;
   description: string;
-  date: string;
-  reportedBy: string;
-  severity: 'LOW' | 'MEDIUM' | 'HIGH';
-  status: 'OPEN' | 'CLOSED' | 'APPEALED';
-  resolution?: string;
   createdAt: string;
-  updatedAt: string;
 }
 
-export interface EmployeeSchedule {
+export interface Reminder {
   id: string;
-  employeeId: string;
-  type: 'VACATION' | 'TRAINING' | 'DUTY' | 'LEAVE';
-  startDate: string;
-  endDate: string;
-  status: 'PLANNED' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
-  approvedBy?: string;
-  notes?: string;
+  employeeId?: string;
+  relatedDocumentId?: string;
+  reminderType: ReminderType;
+  reminderDate: string;
+  status: ReminderStatus;
   createdAt: string;
-  updatedAt: string;
 }
-
-export interface ActivityLog {
-  id: string;
-  employeeId: string;
-  action: string;
-  details: string;
-  performedBy: string;
-  timestamp: string;
-} 

@@ -28,18 +28,28 @@ const TEST_USER: User = {
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, setState] = useState<AuthState>(() => {
-    const storedUser = localStorage.getItem('user');
-    return {
-      user: storedUser ? JSON.parse(storedUser) : null,
-      isAuthenticated: !!storedUser,
-      isLoading: false,
-      error: null
-    };
+  const [state, setState] = useState<AuthState>({
+    user: null,
+    isAuthenticated: false,
+    isLoading: false,
+    error: null
   });
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setState(prev => ({
+        ...prev,
+        user: JSON.parse(storedUser),
+        isAuthenticated: true
+      }));
+    }
+  }, []);
 
   const login = async (email: string, password: string) => {
     try {
+      setState(prev => ({ ...prev, isLoading: true, error: null }));
+      
       if (email === 'test@example.com' && password === 'test123') {
         localStorage.setItem('user', JSON.stringify(TEST_USER));
         setState({

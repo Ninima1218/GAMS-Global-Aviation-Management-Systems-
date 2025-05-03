@@ -68,6 +68,8 @@ export const ReportProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const createReport = async (reportData: Omit<Report, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'actions' | 'comments' | 'trackingNumber'>) => {
+    setIsLoading(true);
+    setError(null);
     try {
       const newReport: Report = {
         ...reportData,
@@ -80,28 +82,18 @@ export const ReportProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         createdBy: user?.id || '',
         trackingNumber: generateTrackingNumber(),
       };
-
       const response = await fetch('http://localhost:3001/reports', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newReport),
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to create report');
-      }
-
-      const savedReport = await response.json();
-      setReports(prev => [...prev, savedReport]);
-      
-      // TODO: Send notification to Safety Manager
-      // This would be implemented with your notification system
+      if (!response.ok) throw new Error('Failed to create report');
+      await loadReports();
     } catch (err) {
       setError('Failed to create report');
-      console.error('Error creating report:', err);
       throw err;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -224,30 +216,21 @@ export const ReportProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const updateReport = async (reportId: string, updates: Partial<Report>) => {
+    setIsLoading(true);
+    setError(null);
     try {
       const response = await fetch(`http://localhost:3001/reports/${reportId}`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...updates,
-          updatedAt: new Date().toISOString(),
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...updates, updatedAt: new Date().toISOString() }),
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to update report');
-      }
-
-      const updatedReport = await response.json();
-      setReports(prev => prev.map(report => 
-        report.id === reportId ? updatedReport : report
-      ));
+      if (!response.ok) throw new Error('Failed to update report');
+      await loadReports();
     } catch (err) {
       setError('Failed to update report');
-      console.error('Error updating report:', err);
       throw err;
+    } finally {
+      setIsLoading(false);
     }
   };
 

@@ -18,31 +18,31 @@ export const RoleSwitcher: React.FC = () => {
     const getDashboardPath = (role: UserRole) => {
       switch (role) {
         case UserRole.GENERAL_DIRECTOR:
-          return '/dashboard/general-director';
+          return '/general-director';
         case UserRole.SAFETY_MANAGER:
-          return '/dashboard/safety-manager';
+          return '/safety-manager';
         case UserRole.QUALITY_MANAGER:
-          return '/dashboard/quality-manager';
+          return '/quality-manager';
         case UserRole.SECURITY_MANAGER:
-          return '/dashboard/security-manager';
+          return '/security-manager';
         case UserRole.CAMO_MANAGER:
-          return '/dashboard/camo-manager';
+          return '/camo-manager';
         case UserRole.HR_MANAGER:
-          return '/dashboard/hr-manager';
+          return '/hr-manager';
         case UserRole.TRAINING_MANAGER:
-          return '/dashboard/training-manager';
+          return '/training-manager';
         case UserRole.HEAD_FLIGHT_OPS:
-          return '/dashboard/head-flight-ops';
+          return '/head-flight-ops';
         case UserRole.HEAD_MAINTENANCE:
-          return '/dashboard/head-maintenance';
+          return '/head-maintenance';
         case UserRole.HEAD_GROUND_HANDLING:
-          return '/dashboard/head-ground-handling';
+          return '/head-ground-handling';
         case UserRole.HEAD_CARGO:
-          return '/dashboard/head-cargo';
+          return '/head-cargo';
         case UserRole.HEAD_ENGINEERING:
-          return '/dashboard/head-engineering';
+          return '/head-engineering';
         default:
-          return '/dashboard/general-director';
+          return '/general-director';
       }
     };
 

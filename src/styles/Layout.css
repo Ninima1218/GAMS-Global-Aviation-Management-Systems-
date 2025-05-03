@@ -1,6 +1,7 @@
 .layout {
   display: flex;
   min-height: 100vh;
+  margin-left: 250px; /* Match sidebar width */
 }
 
 .main-content {
@@ -8,9 +9,22 @@
   display: flex;
   flex-direction: column;
   background-color: #f5f6fa;
+  width: calc(100% - 250px); /* Account for sidebar width */
 }
 
 .content {
   padding: 20px;
   flex: 1;
+  overflow-x: hidden;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .layout {
+    margin-left: 60px; /* Match collapsed sidebar width */
+  }
+  
+  .main-content {
+    width: calc(100% - 60px); /* Account for collapsed sidebar width */
+  }
 } 

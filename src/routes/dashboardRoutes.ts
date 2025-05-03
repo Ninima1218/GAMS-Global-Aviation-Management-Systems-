@@ -1,3 +1,4 @@
+import React from 'react';
 import { FC } from 'react';
 import { UserRole } from '../types/user';
 import { GeneralDirectorDashboard } from '../components/Dashboard/GeneralDirectorDashboard';
@@ -6,6 +7,7 @@ import { QualityManagerDashboard } from '../components/Dashboard/QualityManagerD
 import { SecurityManagerDashboard } from '../components/Dashboard/SecurityManagerDashboard';
 import HRDashboard from '../pages/HRDashboard';
 import { TrainingManagerDashboard } from '../components/Dashboard/TrainingManagerDashboard';
+import { EmployeeProfile } from '../pages/EmployeeProfile';
 
 export interface DashboardRoute {
   path: string;
@@ -55,6 +57,18 @@ export const appRoutes = [
   ...dashboardRoutes,
   {
     path: '/employee/:employeeId',
-    component: React.lazy(() => import('../pages/EmployeeProfile')),
+    component: EmployeeProfile,
+  },
+  {
+    path: '/employees',
+    component: React.lazy(() => import('../pages/EmployeesList')),
+  },
+  {
+    path: '/departments',
+    component: React.lazy(() => import('../pages/Departments')),
+  },
+  {
+    path: '/positions',
+    component: React.lazy(() => import('../pages/Positions')),
   }
 ]; 

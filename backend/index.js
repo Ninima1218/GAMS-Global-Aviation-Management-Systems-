@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { UserRole, Permission } = require('../src/types/user');
+const { UserRole, Permission } = require('../src/types/user.ts');
 
 const app = express();
 const PORT = process.env.PORT || 3001;

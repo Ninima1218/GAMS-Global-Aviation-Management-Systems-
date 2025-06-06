@@ -1,13 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { useHR } from '../../contexts/HRContext';
 import { UserRole } from '../../types/user';
-import { ReportModal } from '../Reports/ReportModal';
+import BuildingIcon from '../icons/BuildingIcon';
+import KeyIcon from '../icons/KeyIcon';
+import FileIcon from '../icons/FileIcon';
+import CalendarIcon from '../icons/CalendarIcon';
 import './Sidebar.css';
+import logo from '../../assets/gams-logo.png';
 
 export const Sidebar: React.FC = () => {
   const { user } = useAuth();
+  const { departments } = useHR();
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [departmentsOpen, setDepartmentsOpen] = useState(false);
+  const departmentsRef = useRef<HTMLDivElement>(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (departmentsRef.current && !departmentsRef.current.contains(event.target as Node)) {
+        setDepartmentsOpen(false);
+      }
+    }
+    if (departmentsOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [departmentsOpen]);
+
+  // Default HR menu structure with SVG icons
+  const hrMenu = [
+    {
+      key: 'departments',
+      label: 'Departments',
+      icon: <BuildingIcon />,
+      children: departments.map((dept) => ({
+        key: dept.id,
+        label: dept.name,
+        path: `/departments/${dept.id}`
+      }))
+    },
+    {
+      key: 'access',
+      label: 'Grant/Restrict System Access',
+      icon: <KeyIcon />,
+      path: '/access-control'
+    },
+    {
+      key: 'documentation',
+      label: 'Documentation',
+      icon: <FileIcon />,
+      path: '/documentation'
+    },
+    {
+      key: 'schedule',
+      label: 'Schedule & Activity Tracking',
+      icon: <CalendarIcon />,
+      path: '/schedule-activity'
+    }
+  ];
 
   const getMenuItems = (role: UserRole | undefined) => {
     const roleBasedMenu = {
@@ -75,7 +131,7 @@ export const Sidebar: React.FC = () => {
       ],
     };
 
-    return roleBasedMenu[role || UserRole.GENERAL_DIRECTOR] || [];
+    return roleBasedMenu[role || UserRole.GENERAL_DIRECTOR] || hrMenu;
   };
 
   if (!user) return null;
@@ -83,27 +139,55 @@ export const Sidebar: React.FC = () => {
   const menuItems = getMenuItems(user.role);
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar${isCollapsed ? ' collapsed' : ''}`}>
       <div className="sidebar-header">
-        <h1>GAMS</h1>
+        <img src={logo} alt="GAMS Logo" className="sidebar-logo" />
         <button 
-          className="report-button"
-          onClick={() => setIsReportModalOpen(true)}
+          className="collapse-btn"
+          onClick={() => setIsCollapsed((prev) => !prev)}
+          aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
-          Create Report
+          <span style={{ color: '#111', fontWeight: 700 }}>{isCollapsed ? '→' : '←'}</span>
         </button>
       </div>
       <nav className="sidebar-nav">
-        {menuItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-          >
-            <span className="nav-icon">{item.icon}</span>
-            <span className="nav-label">{item.label}</span>
-          </NavLink>
-        ))}
+        {menuItems.map((item) =>
+          item.key === 'departments' ? (
+            <div key={item.key} className={`nav-item${departmentsOpen ? ' open' : ''}`} ref={departmentsRef}> 
+              <div
+                className="nav-link"
+                onClick={() => setDepartmentsOpen((open) => !open)}
+                style={{ cursor: 'pointer' }}
+              >
+                <span className="nav-icon">{item.icon}</span>
+                {!isCollapsed && <span className="nav-label">{item.label}</span>}
+                <span className="dropdown-arrow">{departmentsOpen ? '▲' : '▼'}</span>
+              </div>
+              {departmentsOpen && !isCollapsed && (
+                <div className="submenu">
+                  {item.children.map((child) => (
+                    <NavLink
+                      key={child.key}
+                      to={child.path}
+                      className={({ isActive }) => `nav-item submenu-item${isActive ? ' active' : ''}`}
+                    >
+                      <span className="nav-label">{child.label}</span>
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : (
+            <NavLink
+              key={item.key}
+              to={item.path}
+              className={({ isActive }) => `nav-item${isActive ? ' active' : ''}`}
+            >
+              <span className="nav-icon">{item.icon}</span>
+              {!isCollapsed && <span className="nav-label">{item.label}</span>}
+            </NavLink>
+          )
+        )}
       </nav>
       <ReportModal
         isOpen={isReportModalOpen}

@@ -3,7 +3,7 @@ import { ReportSelector } from '../components/Reports/ReportSelector';
 import { ASRForm } from '../components/Reports/ASRForm';
 import { ReportForm } from '../components/Reports/ReportForm';
 import { ReportType } from '../types/reports';
-import './ReportsPage.css';
+import '../styles/ReportsPage.css';
 
 export const ReportsPage: React.FC = () => {
   const [selectedReportType, setSelectedReportType] = useState<ReportType | null>(null);

@@ -1,4 +1,3 @@
-
 export enum EmployeeStatus {
   ACTIVE = 'ACTIVE',
   ON_LEAVE = 'ON_LEAVE',
@@ -36,9 +35,38 @@ export enum ReminderStatus {
   COMPLETED = 'COMPLETED'
 }
 
+export enum DocumentStatus {
+  VALID = 'VALID',
+  EXPIRED = 'EXPIRED',
+  PENDING_RENEWAL = 'PENDING_RENEWAL'
+}
+
+export enum ReportType {
+  INCIDENT = 'INCIDENT',
+  NEAR_MISS = 'NEAR_MISS',
+  HAZARD = 'HAZARD',
+  OBSERVATION = 'OBSERVATION'
+}
+
+export enum UserRole {
+  GENERAL_DIRECTOR = 'GENERAL_DIRECTOR',
+  HR_MANAGER = 'HR_MANAGER',
+  SAFETY_MANAGER = 'SAFETY_MANAGER',
+  QUALITY_MANAGER = 'QUALITY_MANAGER',
+  SECURITY_MANAGER = 'SECURITY_MANAGER',
+  CAMO_MANAGER = 'CAMO_MANAGER',
+  TRAINING_MANAGER = 'TRAINING_MANAGER',
+  HEAD_FLIGHT_OPS = 'HEAD_FLIGHT_OPS',
+  HEAD_MAINTENANCE = 'HEAD_MAINTENANCE',
+  HEAD_GROUND_HANDLING = 'HEAD_GROUND_HANDLING',
+  HEAD_CARGO = 'HEAD_CARGO',
+  HEAD_ENGINEERING = 'HEAD_ENGINEERING'
+}
+
 export interface Department {
   id: string;
   name: string;
+  code: string;
   description?: string;
   createdAt: string;
   updatedAt: string;
@@ -61,17 +89,42 @@ export interface Function {
   updatedAt: string;
 }
 
+export interface EmployeeDocument {
+  id: string;
+  title: string;
+  type: DocumentType;
+  documentUrl: string;
+  expiryDate?: string;
+  status: DocumentStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EmployeeTraining {
+  id: string;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  status: 'PLANNED' | 'IN_PROGRESS' | 'COMPLETED';
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Employee {
   id: string;
-  fullName: string;
-  photoUrl?: string;
-  positionId: string;
-  departmentId: string;
+  employeeId: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone: string;
-  supervisorId?: string;
-  employmentDate: string;
+  positionId: string;
+  departmentId: string;
   status: EmployeeStatus;
+  startDate: string;
+  documents: EmployeeDocument[];
+  trainings: EmployeeTraining[];
+  functions: EmployeeFunction[];
   createdAt: string;
   updatedAt: string;
 }
@@ -131,4 +184,20 @@ export interface Reminder {
   reminderDate: string;
   status: ReminderStatus;
   createdAt: string;
+}
+
+export interface EmployeeSchedule {
+  id: string;
+  employeeId: string;
+  date: string;
+  shift: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ActivityLog {
+  id: string;
+  employeeId: string;
+  action: string;
+  timestamp: string;
 }

@@ -146,4 +146,36 @@ body {
 #root {
   width: 100%;
   height: 100vh;
+}
+
+.main-dashboard-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s;
+  min-height: 100vh;
+  background: var(--background-color);
+  padding: 30px 40px 30px 40px;
+}
+
+.sidebar.collapsed ~ .main-dashboard-area {
+  margin-left: 60px;
+}
+
+.new-report-btn {
+  min-width: 160px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.08);
+  border-radius: 6px;
+  padding: 12px 24px;
+  margin-left: auto;
+}
+
+.department-placeholder {
+  margin-top: 30px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  padding: 32px;
+  text-align: center;
+  color: var(--text-color);
 } 

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useHR } from '../contexts/HRContext';
-import { Employee, Department, Position, DocumentStatus, EmployeeStatus } from '../types/hr';
-import './HRDashboard.css';
+import { Employee, Department, Position, DocumentStatus, EmployeeStatus, EmployeeDocument, EmployeeTraining } from '../types/hr';
+import '../styles/HRDashboard.css';
+import '../styles/index.css';
 
 const HRDashboard: React.FC = () => {
   const { 
@@ -22,25 +23,35 @@ const HRDashboard: React.FC = () => {
     return <div className="error">Error: {error}</div>;
   }
 
-  const activeEmployees = employees.filter(emp => emp.status === EmployeeStatus.ACTIVE);
-  const onLeaveEmployees = employees.filter(emp => emp.status === EmployeeStatus.ON_LEAVE);
+  if (!employees || !departments || !positions) {
+    return <div className="error">No data available</div>;
+  }
 
-  const expiringDocuments = employees.flatMap(emp => 
-    emp.documents.filter(doc => {
-      if (!doc.expiryDate) return false;
+  const activeEmployees: Employee[] = employees.filter((emp: Employee) => emp.status === EmployeeStatus.ACTIVE);
+  const onLeaveEmployees: Employee[] = employees.filter((emp: Employee) => emp.status === EmployeeStatus.ON_LEAVE);
+
+  const expiringDocuments: EmployeeDocument[] = employees.flatMap((emp: Employee) => 
+    (emp.documents || []).filter((doc: EmployeeDocument) => {
+      if (!doc?.expiryDate) return false;
       const daysUntilExpiry = Math.floor((new Date(doc.expiryDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
       return daysUntilExpiry <= 30 && daysUntilExpiry > 0;
     })
   );
 
-  const pendingTrainings = employees.flatMap(emp =>
-    emp.trainings.filter(training => training.status === 'PLANNED')
+  const pendingTrainings: EmployeeTraining[] = employees.flatMap((emp: Employee) =>
+    (emp.trainings || []).filter((training: EmployeeTraining) => training.status === 'PLANNED')
   );
 
+  const getEmployeePosition = (positionId: string): string => {
+    const position = positions.find((p: Position) => p.id === positionId);
+    return position?.title || 'Unknown Position';
+  };
+
   return (
-    <div className="hr-dashboard">
-      <div className="dashboard-header">
+    <div className="hr-dashboard main-dashboard-area">
+      <div className="dashboard-header flex justify-between items-center">
         <h1>Aviation HR Dashboard</h1>
+        <button className="btn btn-primary new-report-btn">+ New Report</button>
       </div>
 
       <div className="metrics-grid">
@@ -70,30 +81,38 @@ const HRDashboard: React.FC = () => {
         <div className="dashboard-section">
           <h2>Document Alerts</h2>
           <div className="alerts-list">
-            {expiringDocuments.map(doc => (
-              <div key={doc.id} className="alert-item">
-                <span className="alert-icon">⚠️</span>
-                <div className="alert-content">
-                  <p className="alert-title">{doc.title} Expiring Soon</p>
-                  <p className="alert-desc">Expires on {new Date(doc.expiryDate!).toLocaleDateString()}</p>
+            {expiringDocuments.length > 0 ? (
+              expiringDocuments.map((doc: EmployeeDocument) => (
+                <div key={doc.id} className="alert-item">
+                  <span className="alert-icon">⚠️</span>
+                  <div className="alert-content">
+                    <p className="alert-title">{doc.title} Expiring Soon</p>
+                    <p className="alert-desc">Expires on {new Date(doc.expiryDate!).toLocaleDateString()}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="no-data">No documents expiring soon</p>
+            )}
           </div>
         </div>
 
         <div className="dashboard-section">
           <h2>Training Overview</h2>
           <div className="training-list">
-            {pendingTrainings.map(training => (
-              <div key={training.id} className="training-item">
-                <span className="training-icon">📚</span>
-                <div className="training-content">
-                  <p className="training-title">{training.title}</p>
-                  <p className="training-date">Scheduled: {new Date(training.startDate).toLocaleDateString()}</p>
+            {pendingTrainings.length > 0 ? (
+              pendingTrainings.map((training: EmployeeTraining) => (
+                <div key={training.id} className="training-item">
+                  <span className="training-icon">📚</span>
+                  <div className="training-content">
+                    <p className="training-title">{training.title}</p>
+                    <p className="training-date">Scheduled: {new Date(training.startDate).toLocaleDateString()}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="no-data">No pending trainings</p>
+            )}
           </div>
         </div>
 
@@ -101,11 +120,11 @@ const HRDashboard: React.FC = () => {
           <h2>Department Overview</h2>
           <select 
             value={selectedDepartment} 
-            onChange={(e) => setSelectedDepartment(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedDepartment(e.target.value)}
             className="department-select"
           >
             <option value="all">All Departments</option>
-            {departments.map(dept => (
+            {departments.map((dept: Department) => (
               <option key={dept.id} value={dept.id}>{dept.name}</option>
             ))}
           </select>
@@ -123,12 +142,12 @@ const HRDashboard: React.FC = () => {
               </thead>
               <tbody>
                 {employees
-                  .filter(emp => selectedDepartment === 'all' || emp.departmentId === selectedDepartment)
-                  .map(employee => (
+                  .filter((emp: Employee) => selectedDepartment === 'all' || emp.departmentId === selectedDepartment)
+                  .map((employee: Employee) => (
                     <tr key={employee.id}>
                       <td>{employee.employeeId}</td>
                       <td>{`${employee.firstName} ${employee.lastName}`}</td>
-                      <td>{positions.find(p => p.id === employee.positionId)?.title}</td>
+                      <td>{getEmployeePosition(employee.positionId)}</td>
                       <td>
                         <span className={`status-badge ${employee.status.toLowerCase()}`}>
                           {employee.status}
@@ -145,6 +164,14 @@ const HRDashboard: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {selectedDepartment !== 'all' && (
+        <div className="card department-placeholder">
+          <h2>Department Overview</h2>
+          <p>Department ID: {selectedDepartment}</p>
+          {/* Add more department info here as needed */}
+        </div>
+      )}
     </div>
   );
 };
